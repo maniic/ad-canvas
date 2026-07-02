@@ -1,0 +1,15 @@
+.element {
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  white-space: pre-wrap;
+  user-select: none;
+}
+
+.cta {
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  user-select: none;
+  cursor: default;
+  display: inline-block;
+}
