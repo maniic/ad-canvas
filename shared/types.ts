@@ -61,6 +61,9 @@ export const AD_SPEC_JSON_SCHEMA = {
   },
 } as const;
 
+export type GenerateRequest = { message: string; currentSpec: AdSpec | null };
+export type GenerateResponse = { spec: AdSpec; assistantMessage: string };
+
 export function validateAdSpec(value: unknown): value is AdSpec {
   if (value === null || typeof value !== "object") return false;
 
