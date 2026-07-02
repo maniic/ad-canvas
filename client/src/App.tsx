@@ -1,11 +1,26 @@
-import { useState } from "react";
-import type { AdSpec } from "../../shared/types";
+import { useState, useCallback } from "react";
+import type { AdSpec, AdElement } from "../../shared/types";
 import Canvas from "./Canvas";
 import { SAMPLE_SPEC } from "./sample";
 import styles from "./App.module.css";
 
 export default function App() {
-  const [spec] = useState<AdSpec | null>(SAMPLE_SPEC);
+  const [spec, setSpec] = useState<AdSpec | null>(SAMPLE_SPEC);
+
+  const updateElement = useCallback(
+    (id: string, patch: Partial<AdElement>) => {
+      setSpec((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          elements: prev.elements.map((el) =>
+            el.id === id ? { ...el, ...patch } : el
+          ),
+        };
+      });
+    },
+    []
+  );
 
   return (
     <div className={styles.app}>
@@ -22,7 +37,7 @@ export default function App() {
       {/* Right canvas area */}
       <main className={styles.main}>
         {spec ? (
-          <Canvas spec={spec} />
+          <Canvas spec={spec} onUpdateElement={updateElement} />
         ) : (
           <div className={styles.emptyState}>
             <p>Describe an ad to get started.</p>

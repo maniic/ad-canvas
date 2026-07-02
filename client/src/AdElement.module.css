@@ -3,6 +3,7 @@
   letter-spacing: -0.02em;
   white-space: pre-wrap;
   user-select: none;
+  touch-action: none;
 }
 
 .cta {
@@ -12,4 +13,15 @@
   user-select: none;
   cursor: default;
   display: inline-block;
+  touch-action: none;
+}
+
+.selected {
+  outline: 2px solid rgba(56, 189, 248, 0.8);
+  outline-offset: 4px;
+}
+
+.editing {
+  outline: 2px solid rgba(56, 189, 248, 0.5);
+  outline-offset: 4px;
 }

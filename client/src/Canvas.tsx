@@ -1,17 +1,19 @@
 import { useRef, useEffect, useState } from "react";
-import type { AdSpec } from "../../shared/types";
-import AdElement from "./AdElement";
+import type { AdSpec, AdElement } from "../../shared/types";
+import AdElementComponent from "./AdElement";
 import styles from "./Canvas.module.css";
 
 type Props = {
   spec: AdSpec;
+  onUpdateElement: (id: string, patch: Partial<AdElement>) => void;
 };
 
 const LOGICAL_SIZE = 1080;
 
-export default function Canvas({ spec }: Props) {
+export default function Canvas({ spec, onUpdateElement }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -31,6 +33,10 @@ export default function Canvas({ spec }: Props) {
 
   const { color, accentColor } = spec.background;
 
+  function handleCanvasPointerDown() {
+    setSelectedId(null);
+  }
+
   return (
     <div ref={containerRef} className={styles.container}>
       <div
@@ -46,6 +52,7 @@ export default function Canvas({ spec }: Props) {
         <div
           className={styles.canvas}
           style={{ backgroundColor: color }}
+          onPointerDown={handleCanvasPointerDown}
         >
           {/* Accent shape */}
           <div
@@ -57,7 +64,14 @@ export default function Canvas({ spec }: Props) {
 
           {/* Ad elements */}
           {spec.elements.map((el) => (
-            <AdElement key={el.id} element={el} />
+            <AdElementComponent
+              key={el.id}
+              element={el}
+              scale={scale}
+              selected={selectedId === el.id}
+              onSelect={setSelectedId}
+              onUpdate={onUpdateElement}
+            />
           ))}
         </div>
       </div>
