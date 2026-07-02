@@ -39,7 +39,7 @@ export default function Canvas({ spec }: Props) {
           width: LOGICAL_SIZE,
           height: LOGICAL_SIZE,
           transform: `scale(${scale})`,
-          transformOrigin: "top left",
+          transformOrigin: "center",
         }}
       >
         {/* Background */}

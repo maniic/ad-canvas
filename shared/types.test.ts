@@ -63,4 +63,11 @@ describe("validateAdSpec", () => {
     assert.equal(validateAdSpec(42), false);
     assert.equal(validateAdSpec(true), false);
   });
+
+  it("returns false when canvasSize.width is not 1080", () => {
+    assert.equal(
+      validateAdSpec({ ...validSpec, canvasSize: { width: 720, height: 1080 } }),
+      false,
+    );
+  });
 });

@@ -88,8 +88,8 @@ export function validateAdSpec(value: unknown): value is AdSpec {
   // Validate canvasSize
   if (typeof v["canvasSize"] !== "object" || v["canvasSize"] === null) return false;
   const cs = v["canvasSize"] as Record<string, unknown>;
-  if (typeof cs["width"] !== "number") return false;
-  if (typeof cs["height"] !== "number") return false;
+  if (cs["width"] !== 1080) return false;
+  if (cs["height"] !== 1080) return false;
 
   return true;
 }
