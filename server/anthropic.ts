@@ -1,3 +1,4 @@
+import type AnthropicSdk from "@anthropic-ai/sdk";
 import type { MessageParam } from "@anthropic-ai/sdk/resources/messages/messages.js";
 import { AD_SPEC_JSON_SCHEMA, validateAdSpec } from "../shared/types.js";
 import type { AdSpec, GenerateRequest, GenerateResponse } from "../shared/types.js";
@@ -140,11 +141,18 @@ export async function generateAdSpec(
  * Exported so index.ts can construct it without importing Anthropic directly.
  */
 export function makeRealModelFn(apiKey: string): ModelFn {
+  // Lazily import the SDK and construct the client once; reused across all
+  // invocations of this ModelFn (including the retry inside generateAdSpec).
+  // Tests that never call makeRealModelFn pay zero SDK import cost.
+  let clientPromise: Promise<AnthropicSdk> | null = null;
+
   return async (messages: MessageParam[]) => {
-    // Import here so tests that never call this function pay no import cost
-    // and never need the SDK at test time.
-    const { default: Anthropic } = await import("@anthropic-ai/sdk");
-    const client = new Anthropic({ apiKey });
+    if (clientPromise === null) {
+      clientPromise = import("@anthropic-ai/sdk").then(
+        ({ default: Anthropic }) => new Anthropic({ apiKey }),
+      );
+    }
+    const client = await clientPromise;
 
     const response = await client.messages.create({
       model: "claude-sonnet-4-6",

@@ -44,7 +44,7 @@ app.post("/generate", async (req, res) => {
   }
 
   const generateReq: GenerateRequest = {
-    message: b["message"] as string,
+    message: b["message"],
     currentSpec: currentSpec,
   };
 
