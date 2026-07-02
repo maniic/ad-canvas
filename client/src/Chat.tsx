@@ -17,13 +17,13 @@ export default function Chat({ history, isLoading, onSend }: Props) {
   const [draft, setDraft] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom whenever history changes
+  // Scroll to bottom whenever history changes or the loading row appears
   useEffect(() => {
     const el = listRef.current;
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
-  }, [history]);
+  }, [history, isLoading]);
 
   function handleSend() {
     const text = draft.trim();

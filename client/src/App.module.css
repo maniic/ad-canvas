@@ -38,13 +38,6 @@
   overflow: hidden;
 }
 
-.emptyHint {
-  font-size: 14px;
-  color: #475569;
-  text-align: center;
-  line-height: 1.6;
-}
-
 /* ── Canvas area ── */
 .main {
   flex: 1;
